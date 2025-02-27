@@ -3,6 +3,7 @@ from contextlib import nullcontext
 from typing import Any, Dict, List, Union
 
 import numpy as np
+import torch.distributed as dist
 from datasets import Dataset as HfDataset
 
 from swift.llm import InferArguments, InferRequest, SwiftPipeline, load_dataset, prepare_model_template, sample_dataset
@@ -69,7 +70,6 @@ class SwiftInfer(SwiftPipeline):
             from .infer_engine import LmdeployEngine
             infer_engine_cls = LmdeployEngine
             kwargs.update(args.get_lmdeploy_engine_kwargs())
-
         return infer_engine_cls(**kwargs)
 
     def run(self) -> List[Dict[str, Any]]:
